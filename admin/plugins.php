@@ -1,1 +1,87 @@
-<?php require_once __DIR__ . '/../cdn.php'; \SimpleCdn\Cdn::enable([]); $plugins = \SimpleCdn\Cdn::getPlugins(); ?> <!DOCTYPE html> <html lang="zh-CN"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Simple CDN 后台 - 插件管理</title> <style> * { box-sizing: border-box; } body { font-family: system-ui, -apple-system, Segoe UI, Microsoft YaHei, sans-serif; background: #f5f7fa; color: #111; margin: 0; } .topbar { background: #fff; border-bottom: 1px solid #e2e8f0; padding: 12px 24px; display: flex; align-items: center; gap: 16px; } .topbar h1 { font-size: 16px; margin: 0; color: #0f172a; } .topbar a { color: #2563eb; text-decoration: none; font-size: 13px; } .topbar a:hover { text-decoration: underline; } .topbar .spacer { flex: 1; } .container { max-width: 800px; margin: 24px auto; padding: 0 20px; } .card { background: #fff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 24px; } h2 { font-size: 18px; margin: 0 0 16px; color: #0f172a; } .table { width: 100%; border-collapse: collapse; } .table th { text-align: left; padding: 12px 16px; font-size: 13px; color: #64748b; border-bottom: 1px solid #f1f5f9; background: #fafbfc; } .table td { padding: 12px 16px; border-bottom: 1px solid #f1f5f9; font-size: 14px; } .table tr:hover { background: #f8fafc; } .toggle { display: inline-block; width: 44px; height: 24px; background: #cbd5e1; border-radius: 12px; position: relative; cursor: pointer; transition: background .2s; } .toggle.on { background: #22c55e; } .toggle .knob { position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; background: #fff; border-radius: 50%; transition: transform .2s; } .toggle.on .knob { transform: translateX(20px); } .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 11px; font-weight: 700; } .badge-cdn { background: #dbeafe; color: #1e40af; } .bypass { background: #fef3c7; color: #92400e; } .note { font-size: 13px; color: #64748b; margin-top: 16px; } .btn { display: inline-block; padding: 8px 14px; background: #2563eb; color: #fff; border: none; border-radius: 6px; font-size: 13px; cursor: pointer; text-decoration: none; } .btn:hover { background: #1d4ed8; } .btn-secondary { background: #f1f5f9; color: #334155; } .btn-secondary:hover { background: #e2e8f0; } </style> </head> <body> <div class="topbar"> <h1>插件管理</h1> <div class="spacer"></div> <a href="index.php" class="btn-secondary">← 返回仪表盘</a> </div> <div class="container"> <div class="card"> <h2>已注册插件</h2> <?php if (empty($plugins)): ?> <p class="note">暂无已注册插件。</p> <?php else: ?> <table class="table"> <thead> <tr><th style="width:40%;">插件类</th><th style="width:20%;">状态</th><th>操作</th></tr> </thead> <tbody> <?php foreach ($plugins as $class => $enabled): ?> <tr> <td><?php echo htmlspecialchars($class); ?></td> <td> <label class="toggle <?php echo $enabled ? 'on' : ''; ?>" title="<?php echo $enabled ? '点击禁用' : '点击启用'; ?>"> <input type="checkbox" <?php echo $enabled ? 'checked' : ''; ?> onchange="this.form.submit()" style="display:none;"> <span class="knob"></span> </label> <input type="hidden" name="class" value="<?php echo htmlspecialchars($class); ?>"> <input type="hidden" name="enable" value="<?php echo $enabled ? '0' : '1'; ?>"> </td> <td> <form method="POST" action="action.php?do=toggle_plugin" style="margin:0;display:inline;"> <input type="hidden" name="class" value="<?php echo htmlspecialchars($class); ?>"> <input type="hidden" name="enable" value="<?php echo $enabled ? '0' : '1'; ?>"> <button type="submit" class="btn btn-secondary" style="padding:4px 10px;"> <?php echo $enabled ? '禁用' : '启用'; ?> </button> </form> </td> </tr> <?php endforeach; ?> </tbody> </table> <?php endif; ?> </div> <div class="card"> <h2>插件说明</h2> <table class="table"> <thead> <tr><th style="width:30%;">插件</th><th>作用</th></tr> </thead> <tbody> <tr> <td><strong>UAFilter</strong></td> <td>识别爬虫/命令行工具 User-Agent，添加 <code>X-CDN-Bypass: 1</code> 标记，便于监控与分析</td> </tr> <tr> <td><strong>CacheControl</strong></td> <td>自动注入 <code>Cache-Control</code> 响应头，并在 <code>X-SimpleCDN: HIT0/1</code> 中标记本次请求是回源（0）还是命中缓存（1）</td> </tr> <tr> <td><strong>Gzip</strong></td> <td>客户端支持时对输出内容进行 gzip 压缩，减少传输流量；自动跳过已开启服务器压缩或不支持的场景</td> </tr> </tbody> </table> </div> <div class="note"> <strong>操作说明</strong>：点击开关或“启用/禁用”按钮可即时切换插件状态，无需重启 Web 服务器。<br> 修改后请刷新页面查看最新状态。 </div> </div> </body> </html>;
+<?php
+/**
+ * Simple CDN 后台 - 插件管理
+ * 可视化开关启用/禁用已注册插件
+ */
+
+require_once __DIR__ . '/../cdn.php';
+\SimpleCdn\Cdn::enable([]);
+
+$plugins = \SimpleCdn\Cdn::getPlugins();
+?>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simple CDN 后台 - 插件管理</title>
+<link rel="stylesheet" href="assets/admin.css?v=1.0.0">
+</head>
+<body>
+<div class="topbar">
+<h1>插件管理</h1>
+<div class="spacer"></div>
+<a href="index.php" class="btn btn-sm btn-secondary">← 返回仪表盘</a>
+</div>
+
+<div class="container">
+<div class="card">
+<h2>已注册插件</h2>
+<?php if (empty($plugins)): ?>
+<p class="empty">暂无已注册插件。</p>
+<?php else: ?>
+<table class="table">
+<thead>
+<tr><th style="width:40%;">插件类</th><th style="width:20%;">状态</th><th>操作</th></tr>
+</thead>
+<tbody>
+<?php foreach ($plugins as $class => $enabled): ?>
+<tr>
+<td><?php echo htmlspecialchars($class); ?></td>
+<td>
+<span class="badge <?php echo $enabled ? 'badge-online' : 'badge-offline'; ?>">
+<?php echo $enabled ? '启用' : '禁用'; ?>
+</span>
+</td>
+<td>
+<a href="action.php?do=toggle_plugin&class=<?php echo urlencode($class); ?>&enable=<?php echo $enabled ? '0' : '1'; ?>" class="btn btn-sm btn-secondary">
+<?php echo $enabled ? '禁用' : '启用'; ?>
+</a>
+</td>
+</tr>
+<?php endforeach; ?>
+<?php endif; ?>
+</tbody>
+</table>
+</div>
+
+<div class="card">
+<h2>插件说明</h2>
+<table class="table">
+<thead>
+<tr><th style="width:30%;">插件</th><th>作用</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>UAFilter</strong></td>
+<td>识别爬虫/命令行工具 User-Agent，添加 <code>X-CDN-Bypass: 1</code> 标记，便于监控与分析</td>
+</tr>
+<tr>
+<td><strong>CacheControl</strong></td>
+<td>自动注入 <code>Cache-Control</code> 响应头，并在 <code>X-SimpleCDN: HIT0/1</code> 中标记本次请求是回源（0）还是命中缓存（1）</td>
+</tr>
+<tr>
+<td><strong>Gzip</strong></td>
+<td>客户端支持时对输出内容进行 gzip 压缩，减少传输流量；自动跳过已开启服务器压缩或不支持的场景</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<div class="note">
+<strong>操作说明</strong>：点击“启用/禁用”按钮可即时切换插件状态，无需重启 Web 服务器。<br>
+修改后请刷新页面查看最新状态。
+</div>
+</div>
+</body>
+</html>
