@@ -1,25 +1,4 @@
-# 虚拟主机CDN - Git 忽略文件
-
-# 运行时缓存目录（部署后自动生成）
 runtime-cache/
+*.cache
+*.tmp.*
 stats/
-purge_logs/
-health_checks/
-warm/
-
-# 系统文件
-.DS_Store
-Thumbs.db
-
-# 编辑器/IDE
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# 操作系统
-$RECYCLE.BIN/
-
-# 日志
-*.log
