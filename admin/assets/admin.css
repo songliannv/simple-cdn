@@ -593,6 +593,29 @@ body::before {
     100% { background-position: -200% 0; }
 }
 
+/* ============ 表格容器（移动端横向滚动） ============ */
+.table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-wrap::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-wrap::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.table-wrap::-webkit-scrollbar-thumb {
+    background: rgba(37, 99, 235, 0.3);
+    border-radius: 3px;
+}
+
 /* ============ 响应式 ============ */
 @media (max-width: 768px) {
     .container {
@@ -602,6 +625,16 @@ body::before {
 
     .topbar {
         padding: 12px 20px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .topbar h1 {
+        font-size: 16px;
+    }
+
+    .topbar .spacer {
+        display: none;
     }
 
     .grid {
@@ -639,6 +672,34 @@ body::before {
         width: 100%;
         text-align: center;
     }
+
+    .btn-group {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .btn-group .btn {
+        width: 100%;
+        justify-content: center;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .regions-select {
+        grid-column: 1 / -1;
+    }
+
+    .checkbox-group {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 6px;
+    }
+
+    .checkbox-group label {
+        margin: 0;
+    }
 }
 
 @media (max-width: 480px) {
@@ -656,6 +717,16 @@ body::before {
 
     .card h2 {
         font-size: 15px;
+    }
+
+    .table th,
+    .table td {
+        padding: 8px 10px;
+        font-size: 12px;
+    }
+
+    .card {
+        padding: 16px;
     }
 }
 

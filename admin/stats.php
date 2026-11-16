@@ -58,6 +58,7 @@ $stats = \SimpleCdn\Cdn::getStats();
 <?php if (empty($stats['paths'])): ?>
 <p class="empty">暂无路径统计数据。</p>
 <?php else: ?>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr>
@@ -86,9 +87,9 @@ $stats = \SimpleCdn\Cdn::getStats();
 <?php endforeach; ?>
 </tbody>
 </table>
+</div>
 <?php endif; ?>
 </div>
-
 </div>
 </body>
 </html>

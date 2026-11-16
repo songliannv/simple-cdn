@@ -55,6 +55,7 @@ $purgeToday = \SimpleCdn\Cdn::getPurgeLogToday();
 <?php if (empty($purgeLogs)): ?>
 <p class="empty">暂无清理日志记录。</p>
 <?php else: ?>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr>
@@ -106,6 +107,7 @@ if (empty($nodes)) {
 <?php endforeach; ?>
 </tbody>
 </table>
+</div>
 <?php endif; ?>
 </div>
 

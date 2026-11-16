@@ -98,6 +98,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 <?php if (!empty($cdnNodes)): ?>
 <div class="card">
 <h2>2. 节点列表（共 <?php echo count($cdnNodes); ?> 个）</h2>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr>
@@ -133,6 +134,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
 <?php endforeach; ?>
 </tbody>
 </table>
+</div>
 <p class="note">只有<strong>启用</strong>的节点会在一键清理时被通知。管理节点请前往 <a href="nodes.php" class="btn btn-sm btn-secondary">多节点管理</a>。</p>
 </div>
 <?php endif; ?>

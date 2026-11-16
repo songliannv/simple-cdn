@@ -292,6 +292,7 @@ $selected = isRegionSelected($code, $editNode !== null ? ($editNode['regions'] ?
 <?php if (empty($nodes)): ?>
 <p class="empty">暂无节点配置，请先添加一个节点。</p>
 <?php else: ?>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr>

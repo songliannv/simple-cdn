@@ -132,6 +132,7 @@ if (!empty($_GET['detect_ip'])) {
 </form>
 
 <?php if (!empty($regionMap)): ?>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr><th style="width:30%;">地区代码</th><th>源站 / 资源站点</th><th style="width:auto;">操作</th></tr>
@@ -152,6 +153,7 @@ if (!empty($_GET['detect_ip'])) {
 <?php endforeach; ?>
 </tbody>
 </table>
+</div>
 <?php else: ?>
 <p class="empty">暂无地区映射配置。</p>
 <?php endif; ?>
@@ -172,11 +174,13 @@ if (!empty($_GET['detect_ip'])) {
 <?php if ($detectIp !== ''): ?>
 <div class="card" style="margin-top:16px;">
 <h3>检测结果</h3>
+<div class="table-wrap">
 <table class="table">
 <tr><td>客户端 IP</td><td><?php echo htmlspecialchars($clientIp); ?></td></tr>
 <tr><td>查询 IP</td><td><?php echo htmlspecialchars($detectIp); ?></td></tr>
 <tr><td>识别地区</td><td><?php echo htmlspecialchars($detectRegion ?: '未识别'); ?></td></tr>
 </table>
+</div>
 </div>
 <?php endif; ?>
 </div>

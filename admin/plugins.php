@@ -30,6 +30,7 @@ $plugins = \SimpleCdn\Cdn::getPlugins();
 <?php if (empty($plugins)): ?>
 <p class="empty">暂无已注册插件。</p>
 <?php else: ?>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr><th style="width:40%;">插件类</th><th style="width:20%;">状态</th><th>操作</th></tr>
@@ -50,13 +51,15 @@ $plugins = \SimpleCdn\Cdn::getPlugins();
 </td>
 </tr>
 <?php endforeach; ?>
-<?php endif; ?>
 </tbody>
 </table>
+</div>
+<?php endif; ?>
 </div>
 
 <div class="card">
 <h2>插件说明</h2>
+<div class="table-wrap">
 <table class="table">
 <thead>
 <tr><th style="width:30%;">插件</th><th>作用</th></tr>
@@ -76,6 +79,7 @@ $plugins = \SimpleCdn\Cdn::getPlugins();
 </tr>
 </tbody>
 </table>
+</div>
 </div>
 
 <div class="note">
